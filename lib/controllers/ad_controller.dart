@@ -70,7 +70,7 @@ class AdController extends GetxController {
     navigationCount.value++; // Increase counter
     log(navigationCount.value.toString());
 
-    if (navigationCount.value >= 6) {
+    if (navigationCount.value >= 4) {
       showInterstitialAd();
       navigationCount.value = 0; // Reset counter after showing ad
     }
