@@ -1,0 +1,46 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import '../constants/api_key.dart';
+
+class NewsController extends GetxController {
+  @override
+  void onInit() {
+    getNewsList();
+    super.onInit();
+  }
+
+  final RxString newsStatus = ''.obs;
+  final RxList newsList = [].obs;
+
+  final RxList newsSubList = [].obs;
+
+  final Map<String, String> headers = {
+    'x-rapidapi-key': rapidApiKey,
+    'x-rapidapi-host': 'cricket-live-line1.p.rapidapi.com',
+  };
+
+  Future<void> getNewsList() async {
+    newsStatus.value = 'Loading';
+
+    const String url = 'https://cricket-live-line1.p.rapidapi.com/news';
+
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        newsList.value = data['data'];
+        newsSubList.value = newsList.sublist(5, 5 + 5);
+        newsStatus.value = 'Success';
+      } else {
+        log('getNewsList Response Error: ${response.statusCode}');
+        newsStatus.value = 'Error';
+      }
+    } catch (e) {
+      log("getNewsList Error: $e");
+      newsStatus.value = 'Error';
+    }
+  }
+}
