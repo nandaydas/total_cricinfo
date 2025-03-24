@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import '../constants/api_key.dart';
 
 class NewsController extends GetxController {
   @override
@@ -17,7 +17,7 @@ class NewsController extends GetxController {
   final RxList newsSubList = [].obs;
 
   final Map<String, String> headers = {
-    'x-rapidapi-key': rapidApiKey,
+    'x-rapidapi-key': "${dotenv.env['rapidApiKey']}",
     'x-rapidapi-host': 'cricket-live-line1.p.rapidapi.com',
   };
 

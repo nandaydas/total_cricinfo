@@ -1,8 +1,8 @@
 import 'dart:developer';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:total_cricinfo/constants/api_key.dart';
 
 class MatchListController extends GetxController {
   @override
@@ -31,7 +31,7 @@ class MatchListController extends GetxController {
   final RxString seriesResultStatus = ''.obs;
 
   final Map<String, String> headers = {
-    'x-rapidapi-key': rapidApiKey,
+    'x-rapidapi-key': "${dotenv.env['rapidApiKey']}",
     'x-rapidapi-host': 'cricket-live-line1.p.rapidapi.com',
   };
 

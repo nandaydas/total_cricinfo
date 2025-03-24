@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import '../constants/api_key.dart';
 
 class LiveController extends GetxController {
   final RxString liveStatus = ''.obs;
@@ -21,7 +21,7 @@ class LiveController extends GetxController {
   final RxString fancyStatus = ''.obs;
 
   final Map<String, String> headers = {
-    'x-rapidapi-key': rapidApiKey,
+    'x-rapidapi-key': "${dotenv.env['rapidApiKey']}",
     'x-rapidapi-host': 'cricket-live-line1.p.rapidapi.com',
   };
 
@@ -85,14 +85,14 @@ class LiveController extends GetxController {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         // scorecardData.value = data['response'];
-      
+
         scorecardData.addAll(
             (data['data']['scorecard'] as Map<String, dynamic>?)?.values ?? []);
 
         scorecardStatus.value = 'Success';
       } else {
         log('getScorecard Response Error: ${response.statusCode}');
-   
+
         scorecardStatus.value = 'Error';
       }
     } catch (e) {
@@ -103,7 +103,7 @@ class LiveController extends GetxController {
 
   void getCommentary(int matchId) async {
     final Map<String, String> headers = {
-      'x-rapidapi-key': rapidApiKey,
+      'x-rapidapi-key': "${dotenv.env['rapidApiKey']}",
       'x-rapidapi-host': 'cricket-live-line1.p.rapidapi.com',
     };
 

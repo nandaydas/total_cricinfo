@@ -23,7 +23,7 @@ class NewsViewPage extends StatelessWidget {
         if (banner != null) {
           return SizedBox(
             height: banner.size.height.toDouble(),
-            width: banner.size.width.toDouble(),
+            width: double.infinity,
             child: AdWidget(ad: banner),
           );
         } else {

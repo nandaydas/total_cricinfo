@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import '../constants/api_key.dart';
 import 'package:http/http.dart' as http;
 
 class RankingController extends GetxController {
@@ -13,7 +12,7 @@ class RankingController extends GetxController {
   final RxString playerRankingStatus = "".obs;
 
   final Map<String, String> headers = {
-    'x-rapidapi-key': rapidApiKey,
+    'x-rapidapi-key': "${dotenv.env['rapidApiKey']}",
     'x-rapidapi-host': 'cricket-live-line1.p.rapidapi.com',
   };
 
