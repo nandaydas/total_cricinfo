@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LiveController extends GetxController {
   final RxString liveStatus = ''.obs;
@@ -29,16 +30,50 @@ class LiveController extends GetxController {
     liveStatus.value = 'Loading';
     scorecardStatus.value = 'Loading';
     commentaryStatus.value = 'Loading';
+
     getLiveData(matchData['match_id']);
     getScorecard(matchData['match_id']);
     getCommentary(matchData['match_id']);
+
+    startAutoRefresh(matchData);
   }
 
-  void refreshData(Map matchData) {
-    log('Refreshing...');
-    getLiveData(matchData['match_id']);
-    getScorecard(matchData['match_id']);
-    getCommentary(matchData['match_id']);
+  // void refreshData(Map matchData) {
+  //   log('Refreshing...');
+  //   getLiveData(matchData['match_id']);
+  //   getScorecard(matchData['match_id']);
+  //   getCommentary(matchData['match_id']);
+  // }
+
+  Timer? _refreshTimer;
+
+  void startAutoRefresh(Map matchData) {
+    _refreshTimer?.cancel(); // Cancel previous timer if exists
+
+    if (matchData['match_status'] != 'Finished') {
+      _refreshTimer = Timer.periodic(
+        matchData['match_status'] == 'Live'
+            ? const Duration(seconds: 30)
+            : const Duration(seconds: 60),
+        (timer) {
+          if (Get.currentRoute == '/match') {
+            log('Refreshing... ${Timestamp.now().toDate().second}');
+
+            getLiveData(matchData['match_id']);
+            getScorecard(matchData['match_id']);
+            getCommentary(matchData['match_id']);
+          } else {
+            timer.cancel();
+          }
+        },
+      );
+    }
+  }
+
+  @override
+  void onClose() {
+    _refreshTimer?.cancel();
+    super.onClose();
   }
 
   Future<void> getLiveData(int matchId) async {

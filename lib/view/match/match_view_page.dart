@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -25,58 +24,58 @@ class MatchViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(
-      Duration.zero,
-      () {
-        adController.loadBannerAd();
+    mic.getData(matchData['match_id']);
+    lc.getData(matchData);
 
-        mic.getData(matchData['match_id']);
-        lc.getData(matchData);
+    return PopScope(
+      canPop: true, // Allows the user to navigate back
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          Get.delete<LiveController>(); // Ensures onClose() is called
+        }
       },
-    );
-    return DefaultTabController(
-      length: 6,
-      initialIndex: matchData['match_status'] == 'Upcoming' ? 0 : 1,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-              "${matchData['team_a_short'] ?? '-'} vs ${matchData['team_b_short'] ?? '-'}, ${matchData['matchs']}"),
-          bottom: TabBar(
-            indicatorColor: accentColor,
-            isScrollable: true,
-            tabs: const [
-              Tab(
-                text: ' Info ',
-              ),
-              Tab(
-                text: ' Live ',
-              ),
-              Tab(
-                text: 'Expert Picks',
-              ),
-              Tab(
-                text: 'Commentary',
-              ),
-              Tab(
-                text: 'Scorecard',
-              ),
-              Tab(
-                text: ' Squads ',
-              ),
+      child: DefaultTabController(
+        length: 6,
+        initialIndex: matchData['match_status'] == 'Upcoming' ? 0 : 1,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+                "${matchData['team_a_short'] ?? '-'} vs ${matchData['team_b_short'] ?? '-'}, ${matchData['matchs']}"),
+            bottom: TabBar(
+              indicatorColor: accentColor,
+              isScrollable: true,
+              tabs: const [
+                Tab(
+                  text: ' Info ',
+                ),
+                Tab(
+                  text: ' Live ',
+                ),
+                Tab(
+                  text: 'Expert Picks',
+                ),
+                Tab(
+                  text: 'Commentary',
+                ),
+                Tab(
+                  text: 'Scorecard',
+                ),
+                Tab(
+                  text: ' Squads ',
+                ),
+              ],
+            ),
+            actions: [
+              Visibility(
+                visible: matchData['match_status'] == 'Upcoming',
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.notifications_active_outlined),
+                ),
+              )
             ],
           ),
-          actions: [
-            Visibility(
-              visible: matchData['match_status'] == 'Upcoming',
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notifications_active_outlined),
-              ),
-            )
-          ],
-        ),
-        bottomNavigationBar: Obx(
-          () {
+          bottomNavigationBar: Obx(() {
             final banner = adController.bannerAd.value;
             if (banner != null) {
               return SizedBox(
@@ -87,42 +86,20 @@ class MatchViewPage extends StatelessWidget {
             } else {
               return const SizedBox();
             }
-          },
-        ),
-        body: GetBuilder<LiveController>(
-          initState: (_) {
-            if (matchData['match_status'] != 'Finished') {
-              Timer.periodic(
-                matchData['match_status'] == 'Live'
-                    ? const Duration(seconds: 30)
-                    : const Duration(seconds: 60),
-                (timer) {
-                  if (Get.currentRoute == '/match') {
-                    lc.refreshData(matchData);
-                  } else {
-                    timer.cancel();
-                  }
-                },
-              );
-            } else {
-              //No need to refresh as match is finished
-            }
-          },
-          builder: (context) {
-            return TabBarView(
-              children: [
-                InfoTab(),
-                LiveTab(
-                  matchData: matchData,
-                  matchStatus: matchData['match_status'] ?? 'Live',
-                ),
-                ExpertPicksTab(matchId: matchData['match_id'].toString()),
-                CommentaryTab(),
-                ScorecardTab(matchStatus: matchData['match_status']),
-                SquadsTab(),
-              ],
-            );
-          },
+          }),
+          body: TabBarView(
+            children: [
+              InfoTab(),
+              LiveTab(
+                matchData: matchData,
+                matchStatus: matchData['match_status'] ?? 'Live',
+              ),
+              ExpertPicksTab(matchId: matchData['match_id'].toString()),
+              CommentaryTab(),
+              ScorecardTab(matchStatus: matchData['match_status']),
+              SquadsTab(),
+            ],
+          ),
         ),
       ),
     );
