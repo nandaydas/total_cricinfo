@@ -22,14 +22,10 @@ class SeriesViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    mlc.getSeriesUpcomingList(seriesData['series_id']);
+    sc.getSeriesUpcomingList(seriesData['series_id']);
     mlc.getSeriesResultList(seriesData['series_id']);
     sc.getData(seriesData);
     log(seriesData['series_id'].toString());
-
-    Future.delayed(Duration.zero, () {
-      adController.loadBannerAd();
-    });
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -37,15 +33,16 @@ class SeriesViewPage extends StatelessWidget {
           title: Text('${seriesData['series']}'),
           bottom: TabBar(
             indicatorColor: accentColor,
+            isScrollable: true,
             tabs: const [
               Tab(
-                text: 'Matches',
+                text: ' Matches ',
               ),
               Tab(
                 text: 'Points Table',
               ),
               Tab(
-                text: 'News',
+                text: ' News ',
               ),
             ],
           ),
@@ -62,14 +59,19 @@ class SeriesViewPage extends StatelessWidget {
             return const SizedBox();
           }
         }),
-        body: TabBarView(
-          children: [
-            SeriesMatchesTab(
-              seriesId: seriesData['series_id'],
+        body: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: TabBarView(
+              children: [
+                SeriesMatchesTab(
+                  seriesId: seriesData['series_id'],
+                ),
+                SeriesTableTab(),
+                SeriesNewsTab()
+              ],
             ),
-            SeriesTableTab(),
-            SeriesNewsTab()
-          ],
+          ),
         ),
       ),
     );

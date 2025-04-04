@@ -97,30 +97,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  cloud_firestore:
-    dependency: "direct main"
-    description:
-      name: cloud_firestore
-      sha256: "6b5d0ca6b62830ca5bcf98c5e0c882df32dea3cb523b635db3626333e1c29090"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.6.5"
-  cloud_firestore_platform_interface:
-    dependency: transitive
-    description:
-      name: cloud_firestore_platform_interface
-      sha256: "149c7d2d634178aff8e25eba6cbbbc76bd92f37e0e63727a31952c72bbcb77fb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.6.5"
-  cloud_firestore_web:
-    dependency: transitive
-    description:
-      name: cloud_firestore_web
-      sha256: "05a3c02a7edb3fadeb3f14f491c3a0bbad3ea2c9f22842acbf1d73bceeb93e77"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.4.5"
   collection:
     dependency: transitive
     description:
@@ -257,30 +233,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.21.1"
-  firebase_ui_firestore:
-    dependency: "direct main"
-    description:
-      name: firebase_ui_firestore
-      sha256: "9043b9e579cfb23fff6f3c6ab1bdb32697cd4dbebba734db969cb488dd960957"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.7.1"
-  firebase_ui_localizations:
-    dependency: transitive
-    description:
-      name: firebase_ui_localizations
-      sha256: "01c0c872ce08d16d217490af3438c97c4fcf1187e856dd2525f892178782fc46"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.13.1"
-  firebase_ui_shared:
-    dependency: transitive
-    description:
-      name: firebase_ui_shared
-      sha256: f1d07c130a39104d32fba1dab274b7bcb13be2bf4e652624a4ccabb58f9781f1
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.4.1"
   fixnum:
     dependency: transitive
     description:
@@ -318,11 +270,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
-  flutter_localizations:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   flutter_svg:
     dependency: transitive
     description:
@@ -470,13 +417,13 @@ packages:
     source: hosted
     version: "1.0.0"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
-      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.19.0"
+    version: "0.20.2"
   just_audio:
     dependency: transitive
     description:

@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lottie/lottie.dart';
 import '../../constants/colors.dart';
+import '../../controllers/ad_controller.dart';
 import '../../controllers/ranking_controller.dart';
 
 class PlayerRanking extends StatelessWidget {
   PlayerRanking({super.key});
 
   final RankingController rc = Get.put(RankingController());
+  final AdController adController = Get.put(AdController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +19,18 @@ class PlayerRanking extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Player Ranking'),
       ),
+      bottomNavigationBar: Obx(() {
+        final banner = adController.bannerAd.value;
+        if (banner != null) {
+          return SizedBox(
+            height: banner.size.height.toDouble(),
+            width: double.infinity,
+            child: AdWidget(ad: banner),
+          );
+        } else {
+          return const SizedBox();
+        }
+      }),
       body: Obx(
         () => rc.playerRankingStatus.value == 'Loading'
             ? Center(
@@ -26,7 +41,7 @@ class PlayerRanking extends StatelessWidget {
                 ),
               )
             : Scrollbar(
-              child: ListView.builder(
+                child: ListView.builder(
                   itemCount: rc.playerRankingList.length,
                   padding: const EdgeInsets.symmetric(vertical: 6),
                   itemBuilder: (context, index) {
@@ -38,8 +53,8 @@ class PlayerRanking extends StatelessWidget {
                         border: Border.all(
                             color: primaryColor.withOpacity(0.5), width: 0.2),
                       ),
-                      margin:
-                          const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Row(
@@ -69,7 +84,8 @@ class PlayerRanking extends StatelessWidget {
                                 Text(
                                   "${item['name']}",
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w600, fontSize: 16),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16),
                                 ),
                                 Text(
                                     "Rating: ${item['rating']},  Country: ${item['country']}")
@@ -81,7 +97,7 @@ class PlayerRanking extends StatelessWidget {
                     );
                   },
                 ),
-            ),
+              ),
       ),
     );
   }

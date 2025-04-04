@@ -167,77 +167,7 @@ class FrontPage extends StatelessWidget {
                 }
               },
             ),
-            Obx(() {
-              if (sc.seriesListStatus.value == 'Loading') {
-                return const SizedBox();
-              } else if (sc.seriesListStatus.value == 'Error') {
-                return const SizedBox();
-              } else {
-                mlc.getSeriesUpcomingList(sc.seriesList[0]['series_id']);
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "${sc.seriesList[0]['series']}",
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              hc.selectedIndex.value = 2;
-                            },
-                            child: Text(
-                              'View all',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: primaryColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Obx(
-                      () => mlc.seriesUpcomingStatus.value == 'Loading'
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                color: primaryColor,
-                              ),
-                            )
-                          : mlc.seriesUpcomingStatus.value == 'Error'
-                              ? const Center(
-                                  child: Text('Something went wrong'),
-                                )
-                              : mlc.seriesUpcomingList.isEmpty
-                                  ? const Center(
-                                      child: Text('No matches found'),
-                                    )
-                                  : SizedBox(
-                                      height: 160,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6.0),
-                                        itemCount:
-                                            mlc.seriesUpcomingList.length,
-                                        itemBuilder: (context, index) {
-                                          final matchData =
-                                              mlc.seriesUpcomingList[index];
-                                          return MatchCardHoriz(
-                                            matchData: matchData,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                    ),
-                  ],
-                );
-              }
-            }),
+            _seriesMatches(),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               child: Row(
@@ -520,6 +450,80 @@ class FrontPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _seriesMatches() {
+    return Obx(
+      () {
+        if (sc.seriesListStatus.value == 'Loading') {
+          return const SizedBox();
+        } else if (sc.seriesListStatus.value == 'Error') {
+          return const SizedBox();
+        } else {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${sc.seriesList[0]['series']}",
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        hc.selectedIndex.value = 2;
+                      },
+                      child: Text(
+                        'View all',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Obx(
+                () => sc.seriesUpcomingStatus.value == 'Loading'
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: primaryColor,
+                        ),
+                      )
+                    : sc.seriesUpcomingStatus.value == 'Error'
+                        ? const Center(
+                            child: Text('Something went wrong'),
+                          )
+                        : sc.seriesUpcomingList.isEmpty
+                            ? const Center(
+                                child: Text('No matches found'),
+                              )
+                            : SizedBox(
+                                height: 160,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 6.0),
+                                  itemCount: sc.seriesUpcomingList.length,
+                                  itemBuilder: (context, index) {
+                                    final matchData =
+                                        sc.seriesUpcomingList[index];
+                                    return MatchCardHoriz(
+                                      matchData: matchData,
+                                    );
+                                  },
+                                ),
+                              ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }

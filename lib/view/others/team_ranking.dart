@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lottie/lottie.dart';
 import 'package:total_cricinfo/controllers/ranking_controller.dart';
 import '../../constants/colors.dart';
+import '../../controllers/ad_controller.dart';
 
 class TeamRanking extends StatelessWidget {
   TeamRanking({super.key});
 
   final RankingController rc = Get.put(RankingController());
+  final AdController adController = Get.put(AdController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +19,18 @@ class TeamRanking extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Team Ranking'),
       ),
+      bottomNavigationBar: Obx(() {
+        final banner = adController.bannerAd.value;
+        if (banner != null) {
+          return SizedBox(
+            height: banner.size.height.toDouble(),
+            width: double.infinity,
+            child: AdWidget(ad: banner),
+          );
+        } else {
+          return const SizedBox();
+        }
+      }),
       body: Obx(
         () => rc.teamRankingStatus.value == 'Loading'
             ? Center(

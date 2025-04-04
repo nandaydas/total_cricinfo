@@ -23,7 +23,7 @@ class AdController extends GetxController {
       adUnitId: kDebugMode
           ? 'ca-app-pub-3940256099942544/6300978111' // Test Ad Unit
           : 'ca-app-pub-8683407615272230/6361372135',
-      size: AdSize.fullBanner,
+      size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (ad) {

@@ -52,7 +52,10 @@ class SeriesController extends GetxController {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         seriesList.value = data['data'];
+
         seriesListStatus.value = 'Success';
+
+        getSeriesUpcomingList(seriesList[0]['series_id']);
       } else {
         log('getSeriesList Response Error: ${response.statusCode}');
         seriesListStatus.value = 'Error';
@@ -60,6 +63,34 @@ class SeriesController extends GetxController {
     } catch (e) {
       log("getSeriesList Error: $e");
       seriesListStatus.value = 'Error';
+    }
+  }
+
+  final RxList seriesUpcomingList = [].obs;
+  final RxString seriesUpcomingStatus = ''.obs;
+
+  Future<void> getSeriesUpcomingList(int seriesID) async {
+    seriesUpcomingStatus.value = 'Loading';
+
+    String url =
+        'https://cricket-live-line1.p.rapidapi.com/series/$seriesID/upcomingMatches';
+
+    try {
+      final response = await http.get(Uri.parse(url), headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        seriesUpcomingList.value = data['data'];
+
+        seriesUpcomingStatus.value = 'Success';
+      } else {
+        log('getSeriesMatchList Response Error: ${response.statusCode}');
+        seriesUpcomingStatus.value = 'Error';
+      }
+    } catch (e) {
+      log("getSeriesMatchList Error $e");
+      seriesUpcomingStatus.value = 'Error';
     }
   }
 

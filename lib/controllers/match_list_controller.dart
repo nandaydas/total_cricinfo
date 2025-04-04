@@ -24,10 +24,8 @@ class MatchListController extends GetxController {
   final RxList upcomingMatchList = [].obs;
   final RxList finishedMatchList = [].obs;
 
-  final RxList seriesUpcomingList = [].obs;
   final RxList seriesResultList = [].obs;
 
-  final RxString seriesUpcomingStatus = ''.obs;
   final RxString seriesResultStatus = ''.obs;
 
   final Map<String, String> headers = {
@@ -140,31 +138,6 @@ class MatchListController extends GetxController {
     } catch (e) {
       log("getFeaturedMatchList Error $e");
       featuredListStatus.value = 'Error';
-    }
-  }
-
-  Future<void> getSeriesUpcomingList(int seriesID) async {
-    seriesUpcomingStatus.value = 'Loading';
-
-    String url =
-        'https://cricket-live-line1.p.rapidapi.com/series/$seriesID/upcomingMatches';
-
-    try {
-      final response = await http.get(Uri.parse(url), headers: headers);
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
-        seriesUpcomingList.value = data['data'];
-
-        seriesUpcomingStatus.value = 'Success';
-      } else {
-        log('getSeriesMatchList Response Error: ${response.statusCode}');
-        seriesUpcomingStatus.value = 'Error';
-      }
-    } catch (e) {
-      log("getSeriesMatchList Error $e");
-      seriesUpcomingStatus.value = 'Error';
     }
   }
 

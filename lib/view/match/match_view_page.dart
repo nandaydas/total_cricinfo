@@ -5,7 +5,6 @@ import 'package:total_cricinfo/constants/colors.dart';
 import 'package:total_cricinfo/controllers/live_controller.dart';
 import 'package:total_cricinfo/controllers/match_info_controller.dart';
 import 'package:total_cricinfo/view/match/commentary_tab.dart';
-import 'package:total_cricinfo/view/match/expert_picks_tab.dart';
 import 'package:total_cricinfo/view/match/info_tab.dart';
 import 'package:total_cricinfo/view/match/live_tab.dart';
 import 'package:total_cricinfo/view/match/scorecard_tab.dart';
@@ -52,9 +51,6 @@ class MatchViewPage extends StatelessWidget {
                   text: ' Live ',
                 ),
                 Tab(
-                  text: 'Expert Picks',
-                ),
-                Tab(
                   text: 'Commentary',
                 ),
                 Tab(
@@ -94,7 +90,6 @@ class MatchViewPage extends StatelessWidget {
                 matchData: matchData,
                 matchStatus: matchData['match_status'] ?? 'Live',
               ),
-              ExpertPicksTab(matchId: matchData['match_id'].toString()),
               CommentaryTab(),
               ScorecardTab(matchStatus: matchData['match_status']),
               SquadsTab(),

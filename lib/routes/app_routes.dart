@@ -3,7 +3,6 @@ import 'package:total_cricinfo/routes/route_names.dart';
 import 'package:total_cricinfo/view/News/news_view_page.dart';
 import 'package:total_cricinfo/view/home/home_page.dart';
 import 'package:total_cricinfo/view/match/match_view_page.dart';
-import 'package:total_cricinfo/view/others/expert_picks.dart';
 import 'package:total_cricinfo/view/others/team_ranking.dart';
 import 'package:total_cricinfo/view/player/player_info_page.dart';
 import 'package:total_cricinfo/view/others/player_ranking.dart';
@@ -45,10 +44,6 @@ class AppRoutes {
         GetPage(
           name: RouteNames.teamRanking,
           page: () => TeamRanking(),
-        ),
-        GetPage(
-          name: RouteNames.expertPicks,
-          page: () => const ExpertPicks(),
         ),
       ];
 }
