@@ -33,16 +33,15 @@ class SeriesViewPage extends StatelessWidget {
           title: Text('${seriesData['series']}'),
           bottom: TabBar(
             indicatorColor: accentColor,
-            isScrollable: true,
             tabs: const [
               Tab(
-                text: ' Matches ',
+                text: 'Matches',
               ),
               Tab(
                 text: 'Points Table',
               ),
               Tab(
-                text: ' News ',
+                text: 'News',
               ),
             ],
           ),

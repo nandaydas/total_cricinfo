@@ -105,6 +105,7 @@ class SeriesTableTab extends StatelessWidget {
                               itemCount: sc.seriesTable.length,
                               itemBuilder: (context, index) {
                                 final teamData = sc.seriesTable[index];
+
                                 return Column(
                                   children: [
                                     ListTile(
@@ -144,7 +145,7 @@ class SeriesTableTab extends StatelessWidget {
                                         children: [
                                           SizedBox(
                                             width: 30,
-                                            child: Text(teamData['Pts'] ?? '-'),
+                                            child: Text(teamData['P'] ?? '-'),
                                           ),
                                           SizedBox(
                                             width: 30,
