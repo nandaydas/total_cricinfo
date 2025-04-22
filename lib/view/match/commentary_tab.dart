@@ -36,15 +36,27 @@ class CommentaryTab extends StatelessWidget {
                           itemCount: lc
                               .commentaryList[
                                   '${lc.currentInnings.value} Inning']
-                              .keys
-                              .toList()
                               .length,
                           itemBuilder: (context, index) {
-                            final overData = lc
+                            final overKeys = lc
                                 .commentaryList[
                                     '${lc.currentInnings.value} Inning']
                                 .keys
-                                .toList()[index];
+                                .toList();
+
+                            // Clean and sort
+                            overKeys.sort((a, b) {
+                              double getOverNumber(String key) {
+                                final match =
+                                    RegExp(r"[\d.]+").stringMatch(key);
+                                return double.tryParse(match ?? "0") ?? 0;
+                              }
+
+                              return getOverNumber(b)
+                                  .compareTo(getOverNumber(a)); // Descending
+                            });
+
+                            final overData = overKeys[index];
 
                             return ExpansionTile(
                               initiallyExpanded: true,
@@ -52,8 +64,9 @@ class CommentaryTab extends StatelessWidget {
                               title: Text(
                                 overData,
                                 style: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.bold),
+                                  color: primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               children: [
                                 ListView.builder(
@@ -68,6 +81,7 @@ class CommentaryTab extends StatelessWidget {
                                     Map commentry = lc.commentaryList[
                                             '${lc.currentInnings.value} Inning']
                                         [overData][index];
+
                                     return commentry['type'] == 1
                                         ? CommenrtaryCard(
                                             data: commentry['data'])
