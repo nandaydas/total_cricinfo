@@ -1,8 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'dart:io';
 
 class AdController extends GetxController {
   Rx<BannerAd?> bannerAd = Rx<BannerAd?>(null);
@@ -22,7 +22,9 @@ class AdController extends GetxController {
     bannerAd.value = BannerAd(
       adUnitId: kDebugMode
           ? 'ca-app-pub-3940256099942544/6300978111' // Test Ad Unit
-          : 'ca-app-pub-8683407615272230/6361372135',
+          : Platform.isAndroid
+              ? 'ca-app-pub-8683407615272230/6361372135'
+              : 'ca-app-pub-8683407615272230/9032678600',
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -43,7 +45,9 @@ class AdController extends GetxController {
     InterstitialAd.load(
       adUnitId: kDebugMode
           ? 'ca-app-pub-3940256099942544/1033173712' // Test Interstitial Ad Unit
-          : 'ca-app-pub-8683407615272230/2794528188',
+          : Platform.isAndroid
+              ? 'ca-app-pub-8683407615272230/2794528188'
+              : 'ca-app-pub-8683407615272230/4282064744',
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
