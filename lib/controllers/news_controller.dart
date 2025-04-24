@@ -30,7 +30,8 @@ class NewsController extends GetxController {
       final response = await http.get(Uri.parse(url), headers: headers);
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final decoded = utf8.decode(response.bodyBytes);
+        final data = jsonDecode(decoded);
         newsList.value = data['data'];
         newsSubList.value = newsList.sublist(5, 5 + 5);
         newsStatus.value = 'Success';
