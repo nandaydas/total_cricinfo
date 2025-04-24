@@ -65,12 +65,12 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD49C8nkZ8ErzBflP_STF92ROJVr2ONwWw',
-    appId: '1:832805352412:ios:ed353e6e4dd761be585519',
-    messagingSenderId: '832805352412',
-    projectId: 'cricblizz-e5f68',
-    storageBucket: 'cricblizz-e5f68.firebasestorage.app',
-    iosBundleId: 'com.example.sixcricCricketScore',
+    apiKey: 'AIzaSyBNVy_4UaQ0vwlgXJhpYH4U--lUX_qvNn0',
+    appId: '1:941102094075:ios:38f88c39881634a818425e',
+    messagingSenderId: '941102094075',
+    projectId: 'total-cricinfo-97212',
+    storageBucket: 'total-cricinfo-97212.firebasestorage.app',
+    iosBundleId: 'com.ukmsoftware.totalcricinfo',
   );
 
 }
