@@ -47,5 +47,7 @@
 	</array>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-8683407615272230~2770522582</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires microphone access for audio-related features.</string>
 </dict>
 </plist>
