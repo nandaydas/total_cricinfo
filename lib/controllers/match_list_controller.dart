@@ -31,6 +31,7 @@ class MatchListController extends GetxController {
   final Map<String, String> headers = {
     'x-rapidapi-key': "${dotenv.env['rapidApiKey']}",
     'x-rapidapi-host': 'cricket-live-line1.p.rapidapi.com',
+    'x-requested-with': 'com.ukmsoftware.totalcricinfo'
   };
 
   Future<void> getLiveMatchList() async {
