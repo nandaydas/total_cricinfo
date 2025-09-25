@@ -38,7 +38,7 @@
 |------------------|-------------------------|
 | UI / Frontend    | Flutter (Dart)         |
 | State Management | GetX                   |
-| Backend as Service| Firebase (Auth, Firestore / RTDB, Storage, Notifications etc.) |
+| Backend as Service| Firebase (Auth, Firestore / Storage, Notifications) |
 | Data Source      | External REST API for cricket data |
 | Platforms        | Android, iOS, Web (Linux / macOS / Windows builds as configured) |
 
