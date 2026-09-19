@@ -34,7 +34,7 @@ class MatchCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${matchData['matchs'] ?? ''}, ${matchData['series'] ?? ''}",
+                "${matchData['league']['name'] ?? ''}, ${matchData['round'] ?? ''}",
                 style: TextStyle(
                     color: Colors.black.withOpacity(0.6), fontSize: 12),
               ),
@@ -51,7 +51,8 @@ class MatchCard extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(2),
                             child: CachedNetworkImage(
-                              imageUrl: "${matchData['team_a_img']}",
+                              imageUrl:
+                                  "${matchData['localteam']['image_path']}",
                               height: 20,
                               width: 20,
                               placeholder: (context, url) =>
@@ -67,24 +68,24 @@ class MatchCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 6.0),
                           Text(
-                            matchData['team_a_short'] ?? '-',
+                            matchData['localteam']['code'] ?? '-',
                             style: const TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(width: 6.0),
-                          matchData['match_status'] != 'Upcoming'
-                              ? Text(
-                                  (matchData['team_a_over'] == "") &&
-                                          (matchData['match_status'] == 'Live')
-                                      ? "Yet to bat"
-                                      : "${matchData['team_a_scores']} ${matchData['team_a_over'].contains('&') ? '' : "(${matchData['team_a_over']})"}",
-                                  style: matchData['team_a_over'] == ""
-                                      ? TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey.shade600)
-                                      : TextStyle(color: Colors.grey.shade800),
-                                )
-                              : const SizedBox()
+                          // matchData['status'] != 'Upcoming'
+                          //     ? Text(
+                          //         (matchData['team_a_over'] == "") &&
+                          //                 (matchData['status'] == 'Live')
+                          //             ? "Yet to bat"
+                          //             : "${matchData['team_a_scores']} ${matchData['team_a_over'].contains('&') ? '' : "(${matchData['team_a_over']})"}",
+                          //         style: matchData['team_a_over'] == ""
+                          //             ? TextStyle(
+                          //                 fontSize: 12,
+                          //                 color: Colors.grey.shade600)
+                          //             : TextStyle(color: Colors.grey.shade800),
+                          //       )
+                          //     : const SizedBox()
 
                           // Text(matchData['currentInningsTeamName'] ==
                           //         matchData['matchScore'][0]['teamFullName']
@@ -98,7 +99,8 @@ class MatchCard extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(2),
                             child: CachedNetworkImage(
-                              imageUrl: "${matchData['team_b_img']}",
+                              imageUrl:
+                                  "${matchData['visitorteam']['image_path']}",
                               height: 20,
                               width: 20,
                               placeholder: (context, url) =>
@@ -114,24 +116,24 @@ class MatchCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 6.0),
                           Text(
-                            matchData['team_b_short'] ?? '-',
+                            matchData['visitorteam']['code'] ?? '-',
                             style: const TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(width: 6.0),
-                          matchData['match_status'] != 'Upcoming'
-                              ? Text(
-                                  (matchData['team_b_over'] == "") &&
-                                          (matchData['match_status'] == 'Live')
-                                      ? "Yet to bat"
-                                      : "${matchData['team_b_scores']} ${matchData['team_b_over'].contains('&') ? '' : "(${matchData['team_b_over']})"}",
-                                  style: matchData['team_b_over'] == ""
-                                      ? TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey.shade600)
-                                      : TextStyle(color: Colors.grey.shade800),
-                                )
-                              : const SizedBox()
+                          // matchData['status'] != 'Upcoming'
+                          //     ? Text(
+                          //         (matchData['team_b_over'] == "") &&
+                          //                 (matchData['status'] == 'Live')
+                          //             ? "Yet to bat"
+                          //             : "${matchData['team_b_scores']} ${matchData['team_b_over'].contains('&') ? '' : "(${matchData['team_b_over']})"}",
+                          //         style: matchData['team_b_over'] == ""
+                          //             ? TextStyle(
+                          //                 fontSize: 12,
+                          //                 color: Colors.grey.shade600)
+                          //             : TextStyle(color: Colors.grey.shade800),
+                          //       )
+                          //     : const SizedBox()
                           // Text(matchData['currentInningsTeamName'] ==
                           //         matchData['matchScore'][1]['teamFullName']
                           //     ? '  🏏'
@@ -147,7 +149,7 @@ class MatchCard extends StatelessWidget {
                     decoration: BoxDecoration(color: Colors.grey.shade300),
                   ),
                   Container(
-                    child: matchData['match_status'] == 'Live'
+                    child: matchData['status'] == 'Live'
                         ? Row(
                             children: [
                               Lottie.asset(
@@ -165,20 +167,24 @@ class MatchCard extends StatelessWidget {
                               ),
                             ],
                           )
-                        : matchData['match_status'] == 'Upcoming'
+                        : matchData['status'] == 'NS'
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    matchData['match_date'],
+                                    DateFormat('h:mm a').format(
+                                        DateTime.parse(matchData['starting_at'])
+                                            .toLocal()),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 18),
                                   ),
                                   Text(
-                                    matchData['match_time'],
+                                    DateFormat('MMM d, yyyy').format(
+                                        DateTime.parse(matchData['starting_at'])
+                                            .toLocal()),
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.black.withOpacity(0.6),
@@ -186,14 +192,14 @@ class MatchCard extends StatelessWidget {
                                   ),
                                 ],
                               )
-                            : matchData['result'].contains('won by')
+                            : matchData['note'].contains('won by')
                                 ? Expanded(
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
                                         Text(
-                                          "${matchData['result'].split('won by')[0]}\nWon",
+                                          "${matchData['note'].split('won by')[0]}\nWon",
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                               fontSize: 14,
@@ -207,7 +213,7 @@ class MatchCard extends StatelessWidget {
                                       padding:
                                           const EdgeInsets.only(left: 16.0),
                                       child: Text(
-                                        "${matchData['result']}",
+                                        "${matchData['note']}",
                                         textAlign: TextAlign.end,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
@@ -222,17 +228,14 @@ class MatchCard extends StatelessWidget {
               ),
               const SizedBox(height: 8.0),
               Text(
-                matchData['match_status'] == 'Finished'
-                    ? matchData['result']
-                    : matchData['match_status'] == 'Upcoming'
-                        ? "Venue: ${matchData['venue']}"
-                        : matchData['need_run_ball'] == ""
-                            ? matchData['trail_lead'] == ""
-                                ? matchData['toss'] == ""
-                                    ? "Venue: ${matchData['venue']}"
-                                    : matchData['toss']
-                                : matchData['trail_lead']
-                            : matchData['need_run_ball'],
+                matchData['note'] ??
+                    (matchData['status'] == 'Completed'
+                        ? "Winner:  'Unknown'}" //TODO
+                        : matchData['status'] == 'NS'
+                            ? "Venue: ${matchData['venue']?['name'] ?? 'Unknown'}"
+                            : "Toss: ${matchData['tosswon']?['name'] ?? 'TBD'}"),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: primaryColor,
                   fontSize: 14,
@@ -243,24 +246,5 @@ class MatchCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String formatDateBasedOnToday(String timestamp) {
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp))
-        .subtract(const Duration(hours: 5, minutes: 30));
-
-    DateTime now = DateTime.now();
-    DateTime today = DateTime(now.year, now.month, now.day);
-    DateTime tomorrow = today.add(const Duration(days: 1));
-
-    DateTime comparisonDate = DateTime(date.year, date.month, date.day);
-
-    if (comparisonDate == today) {
-      return 'Today';
-    } else if (comparisonDate == tomorrow) {
-      return 'Tomorrow';
-    } else {
-      return DateFormat('MMMd').format(date);
-    }
   }
 }

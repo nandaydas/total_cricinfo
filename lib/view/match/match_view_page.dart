@@ -23,8 +23,8 @@ class MatchViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    mic.getData(matchData['match_id']);
-    lc.getData(matchData);
+    // mic.getData(matchData['match_id']);
+    // lc.getData(matchData);
 
     return PopScope(
       canPop: true, // Allows the user to navigate back
@@ -35,11 +35,11 @@ class MatchViewPage extends StatelessWidget {
       },
       child: DefaultTabController(
         length: 6,
-        initialIndex: matchData['match_status'] == 'Upcoming' ? 0 : 1,
+        initialIndex: matchData['status'] == 'NS' ? 0 : 1,
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-                "${matchData['team_a_short'] ?? '-'} vs ${matchData['team_b_short'] ?? '-'}, ${matchData['matchs']}"),
+                "${matchData['localteam']['code'] ?? '-'} vs ${matchData['visitorteam']['code'] ?? '-'}, ${matchData['round']}"),
             bottom: TabBar(
               indicatorColor: accentColor,
               isScrollable: true,
@@ -63,7 +63,7 @@ class MatchViewPage extends StatelessWidget {
             ),
             actions: [
               Visibility(
-                visible: matchData['match_status'] == 'Upcoming',
+                visible: matchData['status'] == 'NS',
                 child: IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.notifications_active_outlined),
@@ -85,14 +85,14 @@ class MatchViewPage extends StatelessWidget {
           }),
           body: TabBarView(
             children: [
-              InfoTab(),
-              LiveTab(
-                matchData: matchData,
-                matchStatus: matchData['match_status'] ?? 'Live',
-              ),
-              CommentaryTab(),
-              ScorecardTab(matchStatus: matchData['match_status']),
-              SquadsTab(),
+              // InfoTab(),
+              // LiveTab(
+              //   matchData: matchData,
+              //   matchStatus: matchData['match_status'] ?? 'Live',
+              // ),
+              // CommentaryTab(),
+              // ScorecardTab(matchStatus: matchData['match_status']),
+              // SquadsTab(),
             ],
           ),
         ),

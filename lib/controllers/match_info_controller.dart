@@ -53,17 +53,11 @@ class MatchInfoController extends GetxController {
   Future<void> getMatchSquads(int matchId) async {
     matchSquadsStatus.value = 'Loading';
 
-    final Map<String, String> headers = {
-      'x-rapidapi-key': "${dotenv.env['rapidApiKey']}",
-      'x-rapidapi-host': 'cricket-live-line1.p.rapidapi.com',
-      'x-requested-with': 'com.ukmsoftware.totalcricinfo'
-    };
-
     String url =
         'https://cricket-live-line1.p.rapidapi.com/match/$matchId/squads';
 
     try {
-      final response = await http.get(Uri.parse(url), headers: headers);
+      final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);

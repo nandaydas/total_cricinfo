@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class MatchListController extends GetxController {
   @override
@@ -37,7 +38,8 @@ class MatchListController extends GetxController {
   Future<void> getLiveMatchList() async {
     liveListStatus.value = 'Loading';
 
-    const String url = 'https://cricket-live-line1.p.rapidapi.com/liveMatches';
+    const String url =
+        'https://cricket.sportmonks.com/api/v2.0/fixtures?api_token=oIa1RHGHYILtHo45I6YTH7CTqHGfywRDfaZJHeGFtynIucVzfzSMXR0OlrQU&filter[status]=Live&include=localTeam,visitorTeam,league,venue,tosswon';
 
     Future.delayed(const Duration(seconds: 1)).then(
       (_) async {
@@ -64,12 +66,12 @@ class MatchListController extends GetxController {
   Future<void> getUpcomingMatchList() async {
     upcomingListStatus.value = 'Loading';
     const String url =
-        'https://cricket-live-line1.p.rapidapi.com/upcomingMatches';
+        'https://cricket.sportmonks.com/api/v2.0/fixtures?api_token=oIa1RHGHYILtHo45I6YTH7CTqHGfywRDfaZJHeGFtynIucVzfzSMXR0OlrQU&filter[status]=NS&include=localTeam,visitorTeam,league,venue,tosswon';
 
     Future.delayed(const Duration(seconds: 2)).then(
       (_) async {
         try {
-          final response = await http.get(Uri.parse(url), headers: headers);
+          final response = await http.get(Uri.parse(url));
 
           if (response.statusCode == 200) {
             final data = jsonDecode(response.body);
@@ -94,7 +96,7 @@ class MatchListController extends GetxController {
     finishedListStatus.value = 'Loading';
 
     const String url =
-        'https://cricket-live-line1.p.rapidapi.com/recentMatches';
+        'https://cricket.sportmonks.com/api/v2.0/fixtures?api_token=oIa1RHGHYILtHo45I6YTH7CTqHGfywRDfaZJHeGFtynIucVzfzSMXR0OlrQU&filter[status]=Finished&include=localTeam,visitorTeam,league,venue,tosswon';
 
     Future.delayed(const Duration(seconds: 3)).then(
       (_) async {
@@ -123,7 +125,19 @@ class MatchListController extends GetxController {
   Future<void> getFeaturedMatchList() async {
     featuredListStatus.value = 'Loading';
 
-    const String url = 'https://cricket-live-line1.p.rapidapi.com/home';
+    var startDate = DateFormat('yyyy-MM-dd')
+        .format(DateTime.now().subtract(const Duration(days: 1)))
+        .toString();
+    var endDate = DateFormat('yyyy-MM-dd')
+        .format(
+          DateTime.now().add(
+            const Duration(days: 3),
+          ),
+        )
+        .toString();
+
+    String url =
+        'https://cricket.sportmonks.com/api/v2.0/fixtures?api_token=oIa1RHGHYILtHo45I6YTH7CTqHGfywRDfaZJHeGFtynIucVzfzSMXR0OlrQU&include=localTeam,visitorTeam,league,venue,tosswon,&filter[starts_between]=$startDate,$endDate';
 
     try {
       final response = await http.get(Uri.parse(url), headers: headers);
