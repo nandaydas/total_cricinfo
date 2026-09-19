@@ -13,7 +13,7 @@ import 'package:upgrader/upgrader.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  final List pages = [
+  final List<Widget> pages = [
     FrontPage(),
     MatchesPage(),
     SeriesPage(),
@@ -31,51 +31,67 @@ class HomePage extends StatelessWidget {
       showIgnore: false,
       showLater: false,
       child: Scaffold(
-        body: Obx(
-          () => pages[hc.selectedIndex.value],
+        extendBody: true,
+        body: SafeArea(
+          child: Obx(
+            () => AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) => FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+              child: pages[hc.selectedIndex.value],
+            ),
+          ),
         ),
         bottomNavigationBar: Obx(
-          () => NavigationBar(
-            height: 64,
-            backgroundColor: Colors.white,
-            selectedIndex: hc.selectedIndex.value,
-            onDestinationSelected: (value) {
-              hc.selectedIndex.value = value;
-            },
-            destinations: [
-              NavigationDestination(
-                selectedIcon: Icon(
-                  Iconsax.home,
-                  color: primaryColor,
+          () => Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: const Offset(0, -2),
                 ),
-                icon: const Icon(Iconsax.home_copy),
-                label: 'Home',
+              ],
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
               ),
-              NavigationDestination(
-                selectedIcon: Icon(
-                  Icons.sports_cricket_rounded,
-                  color: primaryColor,
+            ),
+            child: NavigationBar(
+              height: 64,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              indicatorColor: primaryColor.withOpacity(0.1),
+              selectedIndex: hc.selectedIndex.value,
+              onDestinationSelected: (value) {
+                hc.selectedIndex.value = value;
+              },
+              destinations: const [
+                NavigationDestination(
+                  selectedIcon: Icon(Iconsax.home, color: Colors.black),
+                  icon: Icon(Iconsax.home_copy),
+                  label: 'Home',
                 ),
-                icon: const Icon(Icons.sports_cricket_outlined),
-                label: 'Matches',
-              ),
-              NavigationDestination(
-                selectedIcon: Icon(
-                  Icons.emoji_events_rounded,
-                  color: primaryColor,
+                NavigationDestination(
+                  selectedIcon: Icon(Icons.sports_cricket_rounded, color: Colors.black),
+                  icon: Icon(Icons.sports_cricket_outlined),
+                  label: 'Matches',
                 ),
-                icon: const Icon(Icons.emoji_events_outlined),
-                label: 'Series',
-              ),
-              NavigationDestination(
-                selectedIcon: Icon(
-                  Icons.newspaper_rounded,
-                  color: primaryColor,
+                NavigationDestination(
+                  selectedIcon: Icon(Icons.emoji_events_rounded, color: Colors.black),
+                  icon: Icon(Icons.emoji_events_outlined),
+                  label: 'Series',
                 ),
-                icon: const Icon(Icons.newspaper_outlined),
-                label: 'News',
-              ),
-            ],
+                NavigationDestination(
+                  selectedIcon: Icon(Icons.newspaper_rounded, color: Colors.black),
+                  icon: Icon(Icons.newspaper_outlined),
+                  label: 'News',
+                ),
+              ],
+            ),
           ),
         ),
       ),
